@@ -78,11 +78,14 @@ public class Jdbc implements IPizzaDao {
 					.getConnection("jdbc:mysql://localhost:3306/pizzeria","root","");
 			
 			PreparedStatement updatepizza = pizzeria.prepareStatement("update pizza_list set code = ?, libelle = ?, prix = ? where code = ?");
-			updatepizza.setNString(4, pizza.getCode());
+			
+			updatepizza.setString(4, pizza.getCode());
 			updatepizza.setString(1, pizza.getCode());
 			updatepizza.setString(2, pizza.getLibelle());
 			updatepizza.setDouble(3, pizza.getPrix());
 			updatepizza.executeUpdate();
+			
+			
 			
 			
 			
@@ -101,7 +104,8 @@ public class Jdbc implements IPizzaDao {
 			pizzeria = DriverManager
 					.getConnection("jdbc:mysql://localhost:3306/pizzeria","root","");
 			
-			PreparedStatement deletepizza = pizzeria.prepareStatement("delete from pizza_list where code = codePizza");
+			PreparedStatement deletepizza = pizzeria.prepareStatement("delete from pizza_list where code = ?");
+			deletepizza.setString(1, codePizza);
 			deletepizza.executeUpdate();
 			
 		} catch (SQLException e) {
