@@ -1,31 +1,56 @@
 package fr.pizzeria.dao;
 
+import java.util.Properties;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.pizzeria.dao.IPizzaDao;
 import fr.pizzeria.model.Pizza;
 
 public class Jdbc implements IPizzaDao {
 
-	public Jdbc() {
-		
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+	private String urlDb;
+	private String user;
+	private String password;
+	private String driverClass;
 	
-	@Override
+	public Jdbc() {
+		// Recup le fichier properties 
+		// Ranger les infos du fichier 
+		// properties dan les attributs correspondants
+		Properties prop = new Properties();
+		InputStream input = null;
+		
+			try {
+				input = new FileInputStream("config.properties");
+				prop.load(input);
+				
+				urlDb = prop.getProperty("urlDb");
+				user = prop.getProperty("user");
+				password = prop.getProperty("password");
+				driverClass = prop.getProperty("driverClass");
+				
+					try {
+						Class.forName(driverClass);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+				
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			} 
+	}
+				
+		@Override
 	public List<Pizza> findAllPizzas() {
 		Connection pizzeria;
 		ResultSet findpizza = null;
 		List<Pizza> pizzalist = new ArrayList<Pizza>();
 		try {
 			pizzeria = DriverManager
-						.getConnection("jdbc:mysql://localhost:3306/pizzeria","root","");
+						.getConnection(urlDb,user,password);
 			Statement Pizza = pizzeria.createStatement();
 			findpizza = Pizza.executeQuery("Select * from pizza_list");
 			
@@ -56,7 +81,7 @@ public class Jdbc implements IPizzaDao {
 		
 		try {
 			pizzeria = DriverManager
-					.getConnection("jdbc:mysql://localhost:3306/pizzeria","root","");
+					.getConnection(urlDb,user,password);
 		PreparedStatement newpizza = pizzeria.prepareStatement("insert into pizza_list(code,libelle, prix) values (?,?,?)");
 			newpizza.setString(1, pizza.getCode());
 			newpizza.setString(2, pizza.getLibelle());
@@ -75,7 +100,7 @@ public class Jdbc implements IPizzaDao {
 		
 		try {
 			pizzeria = DriverManager
-					.getConnection("jdbc:mysql://localhost:3306/pizzeria","root","");
+					.getConnection(urlDb,user,password);
 			
 			PreparedStatement updatepizza = pizzeria.prepareStatement("update pizza_list set code = ?, libelle = ?, prix = ? where code = ?");
 			
@@ -84,11 +109,6 @@ public class Jdbc implements IPizzaDao {
 			updatepizza.setString(2, pizza.getLibelle());
 			updatepizza.setDouble(3, pizza.getPrix());
 			updatepizza.executeUpdate();
-			
-			
-			
-			
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -102,7 +122,7 @@ public class Jdbc implements IPizzaDao {
 		
 		try {
 			pizzeria = DriverManager
-					.getConnection("jdbc:mysql://localhost:3306/pizzeria","root","");
+					.getConnection(urlDb,user,password);
 			
 			PreparedStatement deletepizza = pizzeria.prepareStatement("delete from pizza_list where code = ?");
 			deletepizza.setString(1, codePizza);
