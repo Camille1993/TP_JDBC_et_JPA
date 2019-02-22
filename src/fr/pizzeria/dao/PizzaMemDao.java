@@ -10,7 +10,7 @@ public class PizzaMemDao implements IPizzaDao {
 
 
 	private List<Pizza> pizzas = new ArrayList<Pizza>();
-	
+
 	public PizzaMemDao(){
 		pizzas.add(new Pizza("PEP", "Pépéroni", 12.50));
 		pizzas.add(new Pizza("MAR", "Margherita", 14.00));
@@ -54,12 +54,22 @@ public class PizzaMemDao implements IPizzaDao {
 	}
 
 	public Pizza findPizzaByCode(String codePizza) {
-		// TODO Auto-generated method stub
+		for (Pizza p : pizzas) {
+			if (p.getCode().equals(codePizza)) {
+				return p;
+			}
+		}
 		return null;
 	}
 
 	public boolean pizzaExists(String codePizza) {
-		// TODO Auto-generated method stub
+		for (Pizza p : pizzas) {
+
+			if (p.getCode().equals(codePizza)) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 
