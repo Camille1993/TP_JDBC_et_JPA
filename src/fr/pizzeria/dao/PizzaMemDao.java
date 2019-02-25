@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import fr.pizzeria.exception.DeletePizzaException;
+import fr.pizzeria.exception.SavePizzaException;
+import fr.pizzeria.exception.UpdatePizzaException;
 import fr.pizzeria.model.Pizza;
 
 public class PizzaMemDao implements IPizzaDao {
@@ -26,12 +29,12 @@ public class PizzaMemDao implements IPizzaDao {
 		return pizzas;
 	}
 
-	public void saveNewPizza(Pizza pizza) {
+	public void saveNewPizza(Pizza pizza) throws SavePizzaException {
 		pizzas.add(pizza);
 
 	}
 
-	public void updatePizza(String codePizza, Pizza pizza) {
+	public void updatePizza(String codePizza, Pizza pizza) throws UpdatePizzaException{
 		for (Pizza p: pizzas){
 			if (p.getCode().equals(codePizza)){
 				p.setCode(pizza.getCode());
@@ -43,7 +46,7 @@ public class PizzaMemDao implements IPizzaDao {
 
 	}
 
-	public void deletePizza(String codePizza) {
+	public void deletePizza(String codePizza) throws DeletePizzaException{
 		Iterator<Pizza> it = pizzas.iterator();
 		while (it.hasNext()){
 			Pizza p = it.next();

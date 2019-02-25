@@ -3,12 +3,13 @@ package fr.pizzeria.services;
 import java.util.Scanner;
 
 import fr.pizzeria.dao.IPizzaDao;
+import fr.pizzeria.exception.StockageException;
 import fr.pizzeria.model.Pizza;
 
 public class ModifierPizzaService extends MenuService {
 
 	@Override
-	public void executeUC(Scanner scanner, IPizzaDao dao) {
+	public void executeUC(Scanner scanner, IPizzaDao dao) throws StockageException{
 		System.out.println("Mettre à jour une pizza");
 		
 		

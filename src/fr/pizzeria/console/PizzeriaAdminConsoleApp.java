@@ -5,6 +5,7 @@ import java.util.Scanner;
 import fr.pizzeria.dao.IPizzaDao;
 import fr.pizzeria.dao.Jdbc;
 import fr.pizzeria.dao.PizzaMemDao;
+import fr.pizzeria.exception.StockageException;
 import fr.pizzeria.services.MenuService;
 import fr.pizzeria.services.MenuServiceFactory;
 
@@ -34,7 +35,11 @@ public class PizzeriaAdminConsoleApp {
 			choix = scanner.nextInt();
 			
 			MenuService service = MenuServiceFactory.getInstance(choix);
-			service.executeUC(scanner, dao);
+			try {
+				service.executeUC(scanner, dao);
+			} catch (StockageException e) {
+				e.printStackTrace();
+			}
 			
 		} while(choix!=99);
 		
