@@ -30,6 +30,9 @@ public class PizzaMemDao implements IPizzaDao {
 	}
 
 	public void saveNewPizza(Pizza pizza) throws SavePizzaException {
+		if (pizzaExists(pizza.getCode())){
+			throw new SavePizzaException("");
+		}
 		pizzas.add(pizza);
 
 	}
@@ -43,6 +46,7 @@ public class PizzaMemDao implements IPizzaDao {
 				return;
 			}
 		}
+		throw new UpdatePizzaException("");
 
 	}
 
@@ -54,6 +58,7 @@ public class PizzaMemDao implements IPizzaDao {
 				it.remove();
 			}
 		}
+		throw new DeletePizzaException("");
 	}
 
 	public Pizza findPizzaByCode(String codePizza) {

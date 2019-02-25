@@ -29,7 +29,7 @@ public class AjouterPizzaServiceTest {
 		IPizzaDao mockedDao = mock(IPizzaDao.class);
 
 		try {
-			doThrow(new StockageException(null)).when(mockedDao).saveNewPizza(any(Pizza.class));
+			doThrow(new SavePizzaException("Cette pizza existe déjà")).when(mockedDao).saveNewPizza(any(Pizza.class));
 		} catch (SavePizzaException e) {
 			e.printStackTrace();
 		}
